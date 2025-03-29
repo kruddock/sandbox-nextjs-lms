@@ -1,8 +1,8 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "20fb3e70-304e-4825-9506-59b7bae0b737",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "4e728430-0786-4409-9247-c1ac0ef371cd",
+  "prevId": "20fb3e70-304e-4825-9506-59b7bae0b737",
   "tables": {
     "products": {
       "name": "products",
@@ -114,6 +114,81 @@
           "name": "courses_id",
           "columns": [
             "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraint": {}
+    },
+    "course_products": {
+      "name": "course_products",
+      "columns": {
+        "courseId": {
+          "name": "courseId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "productId": {
+          "name": "productId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(now())"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(now())"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "course_products_courseId_courses_id_fk": {
+          "name": "course_products_courseId_courses_id_fk",
+          "tableFrom": "course_products",
+          "tableTo": "courses",
+          "columnsFrom": [
+            "courseId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "course_products_productId_products_id_fk": {
+          "name": "course_products_productId_products_id_fk",
+          "tableFrom": "course_products",
+          "tableTo": "products",
+          "columnsFrom": [
+            "productId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "course_products_courseId_productId_pk": {
+          "name": "course_products_courseId_productId_pk",
+          "columns": [
+            "courseId",
+            "productId"
           ]
         }
       },
