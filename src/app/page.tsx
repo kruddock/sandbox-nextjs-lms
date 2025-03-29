@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import { db } from '@/drizzle/db'
 import { ProductTable } from '@/drizzle/schema'
 
@@ -10,8 +9,9 @@ export default async function Home() {
   return (
     <div>
       {products.map((i) => (
-        <div key={i.id}>
+        <div className="flex" key={i.id}>
           <div>{i.productName}</div>
+          <div>{i.unitPrice}</div>
         </div>
       ))}
     </div>
