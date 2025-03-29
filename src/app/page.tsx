@@ -10,8 +10,8 @@ export default async function Home() {
     <div>
       {products.map((i) => (
         <div className="flex" key={i.id}>
-          <div>{i.productName}</div>
-          <div>{i.unitPrice}</div>
+          <div>{i.description}</div>
+          <div>{i.priceInDollars}</div>
         </div>
       ))}
     </div>
