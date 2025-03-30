@@ -1,7 +1,8 @@
-// import { relations } from 'drizzle-orm'
+import { relations } from 'drizzle-orm'
 import { mysqlTable, int, text, mysqlEnum } from 'drizzle-orm/mysql-core'
-import { id, createdAt, updatedAt } from '../helpers'
-// import { CourseProductTable } from './courseProduct'
+import { id, uuid, createdAt, updatedAt } from '../helpers'
+import { CourseSectionTable } from './courseSection'
+import { UserLessonCompleteTable } from './userLessonComplete'
 
 export const lessonStatuses = ['public', 'private', 'preview'] as const
 export type LessonStatus = (typeof lessonStatuses)[number]
@@ -14,15 +15,17 @@ export const LessonTable = mysqlTable('lessons', {
   youtubeVideoId: text().notNull(),
   order: int().notNull(),
   status: lessonStatusEnum.notNull().default('private'),
-
+  sectionId: uuid
+    .notNull()
+    .references(() => CourseSectionTable.id, { onDelete: 'cascade' }),
   createdAt,
   updatedAt
 })
 
-// export const LessonRelationships = relations(LessonTable, ({ one, many }) => ({
-//     section: one(CourseSectionTable, {
-//       fields: [LessonTable.sectionId],
-//       references: [CourseSectionTable.id],
-//     }),
-//     userLessonsComplete: many(UserLessonCompleteTable),
-//   }))
+export const LessonRelationships = relations(LessonTable, ({ one, many }) => ({
+  section: one(CourseSectionTable, {
+    fields: [LessonTable.sectionId],
+    references: [CourseSectionTable.id]
+  }),
+  userLessonsComplete: many(UserLessonCompleteTable)
+}))

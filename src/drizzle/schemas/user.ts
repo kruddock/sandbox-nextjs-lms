@@ -1,4 +1,4 @@
-// import { relations } from 'drizzle-orm'
+import { relations } from 'drizzle-orm'
 import {
   mysqlTable,
   text,
@@ -7,7 +7,7 @@ import {
   mysqlEnum
 } from 'drizzle-orm/mysql-core'
 import { id, createdAt, updatedAt } from '../helpers'
-// import { CourseProductTable } from './courseProduct'
+import { UserCourseAccessTable } from './userCourseAccess'
 
 export const userRoles = ['user', 'admin'] as const
 export type UserRole = (typeof userRoles)[number]
@@ -25,6 +25,6 @@ export const UserTable = mysqlTable('users', {
   updatedAt
 })
 
-// export const UserRelationships = relations(UserTable, ({ many }) => ({
-//     userCourseAccesses: many(UserCourseAccessTable),
-//   }))
+export const UserRelationships = relations(UserTable, ({ many }) => ({
+  userCourseAccesses: many(UserCourseAccessTable)
+}))
