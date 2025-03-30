@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Logo } from '@/components/Logo'
 import { Suspense } from 'react'
-import { SignedIn, SignedOut, SignInButton } from '@clerk/nextjs'
+import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
 import { Button } from '@/components/ui/button'
 
 type ConsumerLayoutProps = {
@@ -34,6 +34,15 @@ const Navbar = () => {
               <Link className="hover:text-blue-400" href="/purchases">
                 Purchase History
               </Link>
+              <div className="ml-auto size-10 self-center">
+                <UserButton
+                  appearance={{
+                    elements: {
+                      userButtonAvatarBox: { width: '100%', height: '100%' }
+                    }
+                  }}
+                />
+              </div>
             </SignedIn>
           </Suspense>
         </div>
