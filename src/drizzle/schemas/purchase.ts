@@ -6,7 +6,7 @@ import {
   json,
   timestamp
 } from 'drizzle-orm/mysql-core'
-import { id, uuid, createdAt, updatedAt } from '../helpers'
+import { id, createdAt, updatedAt } from '../helpers'
 import { UserTable } from './user'
 import { ProductTable } from './product'
 
@@ -16,10 +16,10 @@ export const PurchaseTable = mysqlTable('purchases', {
   id,
   pricePaidInCents: int().notNull(),
   productDetails: json().notNull().$type<ProductDetails>(),
-  userId: uuid
+  userId: varchar({ length: 128 })
     .notNull()
     .references(() => UserTable.id, { onDelete: 'restrict' }),
-  productId: uuid
+  productId: varchar({ length: 128 })
     .notNull()
     .references(() => ProductTable.id, { onDelete: 'restrict' }),
   stripeSessionId: varchar({ length: 128 }).notNull().unique(),

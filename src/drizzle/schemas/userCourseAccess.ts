@@ -1,16 +1,16 @@
 import { relations } from 'drizzle-orm'
-import { mysqlTable, primaryKey } from 'drizzle-orm/mysql-core'
-import { uuid, createdAt, updatedAt } from '../helpers'
+import { mysqlTable, varchar, primaryKey } from 'drizzle-orm/mysql-core'
+import { createdAt, updatedAt } from '../helpers'
 import { UserTable } from './user'
 import { CourseTable } from './course'
 
 export const UserCourseAccessTable = mysqlTable(
   'user_course_access',
   {
-    userId: uuid
+    userId: varchar({ length: 128 })
       .notNull()
       .references(() => UserTable.id, { onDelete: 'cascade' }),
-    courseId: uuid
+    courseId: varchar({ length: 128 })
       .notNull()
       .references(() => CourseTable.id, { onDelete: 'cascade' }),
     createdAt,

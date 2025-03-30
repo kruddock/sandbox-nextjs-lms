@@ -1,6 +1,12 @@
 import { relations } from 'drizzle-orm'
-import { mysqlTable, int, text, mysqlEnum } from 'drizzle-orm/mysql-core'
-import { id, uuid, createdAt, updatedAt } from '../helpers'
+import {
+  mysqlTable,
+  int,
+  text,
+  varchar,
+  mysqlEnum
+} from 'drizzle-orm/mysql-core'
+import { id, createdAt, updatedAt } from '../helpers'
 import { CourseSectionTable } from './courseSection'
 import { UserLessonCompleteTable } from './userLessonComplete'
 
@@ -15,7 +21,7 @@ export const LessonTable = mysqlTable('lessons', {
   youtubeVideoId: text().notNull(),
   order: int().notNull(),
   status: lessonStatusEnum.notNull().default('private'),
-  sectionId: uuid
+  sectionId: varchar({ length: 128 })
     .notNull()
     .references(() => CourseSectionTable.id, { onDelete: 'cascade' }),
   createdAt,
