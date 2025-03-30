@@ -1,5 +1,5 @@
 const HomePage = () => {
-  return <div>Child Content</div>
+  return <div>Public Content</div>
 }
 
 export default HomePage
