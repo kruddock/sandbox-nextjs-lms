@@ -10,11 +10,16 @@
   },
   "dependencies": {
     "@t3-oss/env-nextjs": "^0.12.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "drizzle-orm": "^0.41.0",
+    "lucide-react": "^0.485.0",
     "mysql2": "^3.14.0",
     "next": "15.2.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "tailwind-merge": "^3.0.2",
+    "tw-animate-css": "^1.2.5",
     "uuid": "^11.1.0",
     "valibot": "^1.0.0"
   },
