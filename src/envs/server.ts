@@ -3,7 +3,8 @@ import * as v from 'valibot'
 
 export const env = createEnv({
   server: {
-    DB_URI: v.pipe(v.string(), v.minLength(1))
+    DB_URI: v.pipe(v.string(), v.minLength(1)),
+    CLERK_SECRET_KEY: v.pipe(v.string(), v.minLength(1))
   },
   experimental__runtimeEnv: process.env
 })
