@@ -18,12 +18,14 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
 const Navbar = () => {
   return (
     <header className="h-16 shadow bg-background z-10">
-      <nav className="p-4 grid grid-cols-[auto_auto_1fr] gap-4 items-center">
-        <Link href="/admin">
-          <Logo />
-        </Link>
+      <nav className="p-4 grid grid-cols-[auto_1fr] gap-4 items-center">
+        <div className="flex gap-4">
+          <Link href="/admin">
+            <Logo />
+          </Link>
 
-        <Badge>Administrator</Badge>
+          <Badge>Administrator</Badge>
+        </div>
 
         <div className="flex gap-4">
           <Link className="hover:text-blue-400" href="/admin/courses">
