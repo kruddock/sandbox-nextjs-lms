@@ -1,33 +1,46 @@
-import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
-import { ReactNode } from 'react'
+import { Badge } from '@/components/ui/badge'
+import { Logo } from '@/components/Logo'
 
 type AdminLayoutProps = {
-  children: ReactNode
+  children: Readonly<React.ReactNode>
 }
 
-export default function AdminLayout({ children }: AdminLayoutProps) {
+const AdminLayout = ({ children }: AdminLayoutProps) => {
   return (
     <>
       <Navbar />
-      {children}
+      <div className="container mx-auto my-6">{children}</div>
     </>
   )
 }
 
-function Navbar() {
+const Navbar = () => {
   return (
-    <header className="flex h-16 shadow bg-background z-10">
-      <nav className="px-4 flex gap-4 container">
-        <div className="mr-auto flex items-center gap-2">
-          <Link className="text-lg hover:underline" href="/admin">
-            <div className="size-10 bg-blue-500 text-white rounded-full flex items-center justify-center">
-              KR
-            </div>
+    <header className="h-16 shadow bg-background z-10">
+      <nav className="p-4 grid grid-cols-[auto_auto_1fr] gap-4 items-center">
+        <Link href="/admin">
+          <Logo />
+        </Link>
+
+        <Badge>Administrator</Badge>
+
+        <div className="flex gap-4">
+          <Link className="hover:text-blue-400" href="/admin/courses">
+            Courses
           </Link>
-          <Badge>Admin</Badge>
+
+          <Link className="hover:text-blue-400" href="/admin/products">
+            Products
+          </Link>
+
+          <Link className="hover:text-blue-400" href="/admin/sales">
+            Sales
+          </Link>
         </div>
       </nav>
     </header>
   )
 }
+
+export default AdminLayout

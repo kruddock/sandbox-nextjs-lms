@@ -1,4 +1,4 @@
-export default async function AdminPage() {
+const AdminHomePage = () => {
   return (
     <div className="container my-6">
       <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 md:grid-cols-4 gap-4">
@@ -13,3 +13,5 @@ export default async function AdminPage() {
     </div>
   )
 }
+
+export default AdminHomePage
