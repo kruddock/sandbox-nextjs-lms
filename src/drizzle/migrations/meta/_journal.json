@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1743217247758,
-      "tag": "0000_nappy_karen_page",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1743219313249,
-      "tag": "0001_nappy_gateway",
+      "when": 1743313491360,
+      "tag": "0000_init_core_tables",
       "breakpoints": true
     }
   ]

@@ -1,3 +1,6 @@
-export * from './schemas/product'
 export * from './schemas/course'
-export * from './schemas/courseProduct'
+export * from './schemas/lesson'
+export * from './schemas/product'
+export * from './schemas/purchase'
+export * from './schemas/user'
+// export * from './schemas/courseProduct'
