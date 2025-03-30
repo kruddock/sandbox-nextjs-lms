@@ -11,7 +11,7 @@ type RootLayoutProps = {
   children: Readonly<React.ReactNode>
 }
 
-export default function RootLayout({ children }: RootLayoutProps) {
+const RootLayout = ({ children }: RootLayoutProps) => {
   return (
     <ClerkProvider>
       <html lang="en">
@@ -21,18 +21,4 @@ export default function RootLayout({ children }: RootLayoutProps) {
   )
 }
 
-// export default function RootLayout({
-//   children,
-// }: Readonly<{
-//   children: React.ReactNode;
-// }>) {
-//   return (
-//     <html lang="en">
-//       <body
-//         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-//       >
-//         {children}
-//       </body>
-//     </html>
-//   );
-// }
+export default RootLayout
