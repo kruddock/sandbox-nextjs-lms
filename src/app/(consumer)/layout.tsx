@@ -3,6 +3,8 @@ import { Logo } from '@/components/Logo'
 import { Suspense } from 'react'
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
 import { Button } from '@/components/ui/button'
+import { getCurrentUser } from '@/services/clerk'
+import { canAccessAdminPages } from '@/features/users/permissions'
 
 type ConsumerLayoutProps = {
   children: Readonly<React.ReactNode>
@@ -25,9 +27,11 @@ const Navbar = () => {
           <Logo />
         </Link>
 
-        <div className="flex gap-4">
+        <div className="flex gap-4 items-center">
           <Suspense>
             <SignedIn>
+              <AdminLink />
+
               <Link className="hover:text-blue-400" href="/courses">
                 My Courses
               </Link>
@@ -56,6 +60,17 @@ const Navbar = () => {
         </Suspense>
       </nav>
     </header>
+  )
+}
+
+const AdminLink = async () => {
+  const user = await getCurrentUser()
+  if (!canAccessAdminPages(user)) return null
+
+  return (
+    <Link className="hover:text-blue-400" href="/admin">
+    Admin
+    </Link>
   )
 }
 
