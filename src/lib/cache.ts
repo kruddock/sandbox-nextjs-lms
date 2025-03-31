@@ -1,4 +1,4 @@
-type CACHE_TAG = 'products'
+type CACHE_TAG = 'products' | 'users'
 
 export const getGlobalTag = (tag: CACHE_TAG) => `global:${tag}` as const
 
