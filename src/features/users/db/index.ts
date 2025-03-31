@@ -6,7 +6,26 @@ import { UserTable } from '@/drizzle/schema'
 type UserInsert = typeof UserTable.$inferInsert
 type UserUpdate = Partial<UserInsert>
 
-export const storeUser = async (payload: UserInsert) => {
+export const findById = async (id: string) => {
+  const [user] = await db.select().from(UserTable).where(eq(UserTable.id, id))
+
+  if (user == null) throw new Error('Failed to find user')
+
+  return user
+}
+
+export const findByClerkUserId = async (clerkUserId: string) => {
+  const [user] = await db
+    .select()
+    .from(UserTable)
+    .where(eq(UserTable.clerkUserId, clerkUserId))
+
+  if (user == null) throw new Error('Failed to find user')
+
+  return user
+}
+
+export const store = async (payload: UserInsert) => {
   //   try {
   //     const [{ id }] = await db
   //       .insert(UserTable)
@@ -29,28 +48,34 @@ export const storeUser = async (payload: UserInsert) => {
     throw new Error('Failed to create user')
   }
 
-  const [newUser] = await db
-    .select()
-    .from(UserTable)
-    .where(eq(UserTable.id, id))
+  //   const [newUser] = await db
+  //     .select()
+  //     .from(UserTable)
+  //     .where(eq(UserTable.id, id))
 
-  if (newUser == null) throw new Error('Failed to find user')
+  //   if (newUser == null) throw new Error('Failed to find user')
 
-  //   revalidateUserCache(id)
+  const newUser = await findById(id)
+
+  //   revalidateUserCache(newUser.id)
 
   return newUser
 }
 
-export const updateUser = async (
+export const update = async (
   { clerkUserId }: { clerkUserId: string },
   payload: UserUpdate
 ) => {
-  const res = await db
+  await db
     .update(UserTable)
     .set(payload)
     .where(eq(UserTable.clerkUserId, clerkUserId))
 
-  console.log(res)
+  const updatedUser = await findByClerkUserId(clerkUserId)
+
+  // revalidateUserCache(updatedUser.id)
+
+  return updatedUser
 
   //   const [updatedUser] = await db
   //     .select()
@@ -64,8 +89,10 @@ export const updateUser = async (
   //   return updatedUser
 }
 
-export const deleteUser = async ({ clerkUserId }: { clerkUserId: string }) => {
-  const res = await db
+export const remove = async ({ clerkUserId }: { clerkUserId: string }) => {
+  const deletedUser = await findByClerkUserId(clerkUserId)
+
+  await db
     .update(UserTable)
     .set({
       deletedAt: new Date(),
@@ -76,7 +103,9 @@ export const deleteUser = async ({ clerkUserId }: { clerkUserId: string }) => {
     })
     .where(eq(UserTable.clerkUserId, clerkUserId))
 
-  console.log(res)
+  // revalidateUserCache(deletedUser.id)
+
+  return deletedUser
 
   //   const [updatedUser] = await db
   //     .select()
