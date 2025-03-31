@@ -1,7 +1,7 @@
 import { db } from '@/drizzle/db'
 import { eq } from 'drizzle-orm'
 import { UserTable } from '@/drizzle/schema'
-// import { revalidateUserCache } from '../cache'
+import { revalidateUserCache } from '../cache'
 
 type UserInsert = typeof UserTable.$inferInsert
 type UserUpdate = Partial<UserInsert>
@@ -57,7 +57,7 @@ export const store = async (payload: UserInsert) => {
 
   const newUser = await findById(id)
 
-  //   revalidateUserCache(newUser.id)
+  revalidateUserCache(newUser.id)
 
   return newUser
 }
@@ -73,7 +73,7 @@ export const update = async (
 
   const updatedUser = await findByClerkUserId(clerkUserId)
 
-  // revalidateUserCache(updatedUser.id)
+  revalidateUserCache(updatedUser.id)
 
   return updatedUser
 
@@ -103,7 +103,7 @@ export const remove = async ({ clerkUserId }: { clerkUserId: string }) => {
     })
     .where(eq(UserTable.clerkUserId, clerkUserId))
 
-  // revalidateUserCache(deletedUser.id)
+  revalidateUserCache(deletedUser.id)
 
   return deletedUser
 
