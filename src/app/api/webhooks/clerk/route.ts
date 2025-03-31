@@ -2,7 +2,11 @@ import { headers } from 'next/headers'
 import { Webhook } from 'svix'
 import { WebhookEvent } from '@clerk/nextjs/server'
 import { env } from '@/envs/server'
-import { storeUser, updateUser, deleteUser } from '@/features/users/db'
+import {
+  store as addUser,
+  update as updateUser,
+  remove as deleteUser
+} from '@/features/users/db'
 import { syncClerkUserMetadata } from '@/services/clerk'
 
 export const POST = async (req: Request) => {
@@ -47,7 +51,7 @@ export const POST = async (req: Request) => {
       if (name === '') return new Response('No name', { status: 400 })
 
       if (event.type === 'user.created') {
-        const user = await storeUser({
+        const user = await addUser({
           clerkUserId: event.data.id,
           email,
           name,
@@ -78,4 +82,8 @@ export const POST = async (req: Request) => {
   }
 
   return new Response('', { status: 200 })
+}
+
+export const GET = async (req: Request) => {
+  return new Response('success', { status: 200 })
 }
