@@ -3,43 +3,42 @@
 import * as v from 'valibot'
 import type { InferInput } from 'valibot'
 import { redirect } from 'next/navigation'
-import { deleteProduct, storeProduct, updateProduct } from '../db'
+import { store, update, remove } from '../db'
 import { productSchema } from '../schema'
 
-const validate = (unsafeData: InferInput<typeof productSchema>) =>
-  v.safeParse(productSchema, unsafeData)
+const validate = (data: InferInput<typeof productSchema>) =>
+  v.safeParse(productSchema, data)
 
-export const add = async (unsafeData: InferInput<typeof productSchema>) => {
-  //   const { success, output } = v.safeParse(productSchema, unsafeData)
-  const { success, output } = validate(unsafeData)
+export const addProduct = async (data: InferInput<typeof productSchema>) => {
+  const { success, output } = validate(data)
 
   if (!success) {
     return { error: true, message: 'There was an error creating your product' }
   }
 
-  await storeProduct(output)
+  await store(output)
 
   redirect('/admin/products')
 }
 
-export const update = async (
+export const updateProduct = async (
   id: string,
-  unsafeData: InferInput<typeof productSchema>
+  data: InferInput<typeof productSchema>
 ) => {
-  //   const { success, output } = v.safeParse(productSchema, unsafeData)
-  const { success, output } = validate(unsafeData)
+  //   const { success, output } = v.safeParse(productSchema, data)
+  const { success, output } = validate(data)
 
   if (!success) {
     return { error: true, message: 'There was an error updating your product' }
   }
 
-  await updateProduct(id, output)
+  await update(id, output)
 
   redirect('/admin/products')
 }
 
-export const remove = async (id: string) => {
-  await deleteProduct(id)
+export const deleteProduct = async (id: string) => {
+  await remove(id)
 
   return { error: false, message: 'Successfully deleted your product' }
 }
