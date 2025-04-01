@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { UserButton } from '@clerk/nextjs'
 import { Badge } from '@/components/ui/badge'
 import { Logo } from '@/components/Logo'
 
@@ -39,6 +40,16 @@ const Navbar = () => {
           <Link className="hover:text-blue-400" href="/admin/sales">
             Sales
           </Link>
+
+          <div className="ml-auto size-10 self-center">
+            <UserButton
+              appearance={{
+                elements: {
+                  userButtonAvatarBox: { width: '100%', height: '100%' }
+                }
+              }}
+            />
+          </div>
         </div>
       </nav>
     </header>
