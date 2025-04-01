@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { UserButton } from '@clerk/nextjs'
 import { Badge } from '@/components/ui/badge'
 import { Logo } from '@/components/Logo'
+import { Toaster } from '@/components/ui/sonner'
 
 type AdminLayoutProps = {
   children: Readonly<React.ReactNode>
@@ -11,7 +12,10 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   return (
     <>
       <Navbar />
-      <div className="container mx-auto my-6">{children}</div>
+      <div className="container mx-auto my-6">
+        {children}
+        <Toaster />
+      </div>
     </>
   )
 }
