@@ -1,5 +1,6 @@
 'use client'
 
+import { redirect } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { valibotResolver } from '@hookform/resolvers/valibot'
 import type { InferInput } from 'valibot'
@@ -29,9 +30,19 @@ export const CourseForm = () => {
   })
 
   const onSubmit = async (data: InferInput<typeof courseSchema>) => {
-    await addCourse(data)
+    const { error, message, entityId } = await addCourse(data)
 
-    toast('Course has been created.')
+    if (error) {
+      toast.error(message)
+
+      return
+    }
+
+    if (entityId) {
+      toast.success(message)
+
+      redirect(`/admin/courses/${entityId}/edit`)
+    }
   }
 
   return (

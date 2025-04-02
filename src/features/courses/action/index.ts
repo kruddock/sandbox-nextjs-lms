@@ -2,7 +2,7 @@
 
 import * as v from 'valibot'
 import type { InferInput } from 'valibot'
-import { redirect } from 'next/navigation'
+// import { redirect } from 'next/navigation'
 import { store, update, remove } from '../db'
 import { courseSchema } from '../schema'
 import {
@@ -24,7 +24,13 @@ export const addCourse = async (data: InferInput<typeof courseSchema>) => {
 
   const course = await store(output)
 
-  redirect(`/admin/courses/${course.id}/edit`)
+  return {
+    error: false,
+    message: 'Successfully updated your course',
+    entityId: course.id
+  }
+
+  // redirect(`/admin/courses/${course.id}/edit`)
 }
 
 export const updateCourse = async (

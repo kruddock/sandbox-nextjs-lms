@@ -14,7 +14,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       <Navbar />
       <div className="container mx-auto my-6">
         {children}
-        <Toaster />
+        <Toaster richColors />
       </div>
     </>
   )
