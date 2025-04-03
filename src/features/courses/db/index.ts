@@ -1,10 +1,39 @@
-import { eq } from 'drizzle-orm'
+import { eq, asc, countDistinct } from 'drizzle-orm'
 import { db } from '@/drizzle/db'
-import { CourseTable } from '@/drizzle/schema'
+import {
+  CourseTable,
+  CourseSectionTable,
+  LessonTable,
+  UserCourseAccessTable
+} from '@/drizzle/schema'
 import { revalidateCourseCache } from '../cache'
 
 type CourseInsert = typeof CourseTable.$inferInsert
 type CourseUpdate = Partial<CourseInsert>
+
+export const findAll = async () => {
+  console.log('called')
+  return db
+    .select({
+      id: CourseTable.id,
+      name: CourseTable.name,
+      sectionsCount: countDistinct(CourseSectionTable.courseId),
+      lessonsCount: countDistinct(LessonTable.sectionId),
+      studentsCount: countDistinct(UserCourseAccessTable.courseId)
+    })
+    .from(CourseTable)
+    .leftJoin(
+      CourseSectionTable,
+      eq(CourseSectionTable.courseId, CourseTable.id)
+    )
+    .leftJoin(LessonTable, eq(LessonTable.sectionId, CourseSectionTable.id))
+    .leftJoin(
+      UserCourseAccessTable,
+      eq(UserCourseAccessTable.courseId, CourseTable.id)
+    )
+    .orderBy(asc(CourseTable.name))
+    .groupBy(CourseTable.id)
+}
 
 export const findById = async (id: string) => {
   const [course] = await db

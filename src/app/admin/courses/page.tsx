@@ -1,5 +1,6 @@
 import { PageHeader } from '@/components/PageHeader'
 import { Button } from '@/components/ui/button'
+import { CourseTable } from '@/features/courses/components/CourseTable'
 import Link from 'next/link'
 
 const CoursesPage = async () => {
@@ -11,7 +12,7 @@ const CoursesPage = async () => {
         </Button>
       </PageHeader>
 
-      <div>Course Table Display</div>
+      <CourseTable />
     </div>
   )
 }

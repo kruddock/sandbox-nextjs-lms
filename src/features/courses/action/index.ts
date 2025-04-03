@@ -2,8 +2,8 @@
 
 import * as v from 'valibot'
 import type { InferInput } from 'valibot'
-// import { redirect } from 'next/navigation'
-import { store, update, remove } from '../db'
+import { cacheTag } from 'next/dist/server/use-cache/cache-tag'
+import { findAll, store, update, remove } from '../db'
 import { courseSchema } from '../schema'
 import {
   canCreateCourses,
@@ -11,9 +11,28 @@ import {
   canUpdateCourses
 } from '../permissions'
 import { getCurrentUser } from '@/services/clerk'
+import { getCourseGlobalTag } from '@/features/courses/cache'
+import { getUserCourseAccessGlobalTag } from '@/features/courses/cache'
+import { getCourseSectionGlobalTag } from '@/features/courses/cache'
+import { getLessonGlobalTag } from '@/features/courses/cache'
 
 const validate = (data: InferInput<typeof courseSchema>) =>
   v.safeParse(courseSchema, data)
+
+export const getCourses = async () => {
+  'use cache'
+
+  cacheTag(
+    getCourseGlobalTag(),
+    getUserCourseAccessGlobalTag(),
+    getCourseSectionGlobalTag(),
+    getLessonGlobalTag()
+  )
+
+  const courses = await findAll()
+
+  return courses
+}
 
 export const addCourse = async (data: InferInput<typeof courseSchema>) => {
   const { success, output } = validate(data)
@@ -29,8 +48,6 @@ export const addCourse = async (data: InferInput<typeof courseSchema>) => {
     message: 'Successfully updated your course',
     entityId: course.id
   }
-
-  // redirect(`/admin/courses/${course.id}/edit`)
 }
 
 export const updateCourse = async (
