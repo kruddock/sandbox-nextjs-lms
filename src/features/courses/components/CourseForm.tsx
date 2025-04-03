@@ -41,7 +41,8 @@ export const CourseForm = () => {
     if (entityId) {
       toast.success(message)
 
-      redirect(`/admin/courses/${entityId}/edit`)
+      // redirect(`/admin/courses/${entityId}/edit`)
+      redirect(`/admin/courses`)
     }
   }
 
