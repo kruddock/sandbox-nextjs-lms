@@ -18,19 +18,31 @@ import { Textarea } from '@/components/ui/textarea'
 import { toast } from 'sonner'
 import { RequiredFieldIndicator } from '@/components/RequiredFieldIndicator'
 import { courseSchema } from '../schema'
-import { addCourse } from '../action'
+import { addCourse, updateCourse } from '../action'
 
-export const CourseForm = () => {
+type CourseFormProps = {
+  course?: {
+    id: string
+    name: string
+  }
+}
+
+export const CourseForm = ({ course }: CourseFormProps) => {
+  const isNewRecord = course === undefined
+
   const form = useForm<InferInput<typeof courseSchema>>({
     resolver: valibotResolver(courseSchema),
-    defaultValues: {
+    defaultValues: course ?? {
       name: '',
       description: ''
     }
   })
 
   const onSubmit = async (data: InferInput<typeof courseSchema>) => {
-    const { error, message, entityId } = await addCourse(data)
+    const action =
+      course === undefined ? addCourse : updateCourse.bind(null, course.id)
+
+    const { error, message, entityId } = await action(data)
 
     if (error) {
       toast.error(message)
@@ -41,8 +53,9 @@ export const CourseForm = () => {
     if (entityId) {
       toast.success(message)
 
-      // redirect(`/admin/courses/${entityId}/edit`)
-      redirect(`/admin/courses`)
+      if (isNewRecord) {
+        redirect(`/admin/courses/${entityId}/edit`)
+      }
     }
   }
 

@@ -1,4 +1,4 @@
-import { eq, asc, countDistinct } from 'drizzle-orm'
+import { eq, asc, countDistinct, inArray } from 'drizzle-orm'
 import { db } from '@/drizzle/db'
 import {
   CourseTable,
@@ -12,7 +12,6 @@ type CourseInsert = typeof CourseTable.$inferInsert
 type CourseUpdate = Partial<CourseInsert>
 
 export const findAll = async () => {
-  console.log('called')
   return db
     .select({
       id: CourseTable.id,
@@ -78,4 +77,47 @@ export const remove = async (id: string) => {
   revalidateCourseCache(deletedCourse.id)
 
   return deletedCourse
+}
+
+export const findWithDetails = async (id: string) => {
+  const course = await findById(id)
+
+  if (course) {
+    const courseSections = await db
+      .select({
+        id: CourseSectionTable.id,
+        status: CourseSectionTable.status,
+        name: CourseSectionTable.name
+      })
+      .from(CourseSectionTable)
+      .where(eq(CourseSectionTable.courseId, id))
+      .orderBy(asc(CourseSectionTable.order))
+
+    const lessons = await db
+      .select({
+        id: LessonTable.id,
+        name: LessonTable.name,
+        status: LessonTable.status,
+        description: LessonTable.description,
+        youtubeVideoId: LessonTable.youtubeVideoId,
+        sectionId: LessonTable.sectionId
+      })
+      .from(LessonTable)
+      .where(
+        inArray(
+          LessonTable.sectionId,
+          courseSections.map(({ id }) => id)
+        )
+      )
+
+    return {
+      id: course.id,
+      name: course.name,
+      description: course.description,
+      courseSections,
+      lessons
+    }
+  }
+
+  return null
 }

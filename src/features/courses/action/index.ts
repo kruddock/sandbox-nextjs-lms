@@ -3,7 +3,7 @@
 import * as v from 'valibot'
 import type { InferInput } from 'valibot'
 import { cacheTag } from 'next/dist/server/use-cache/cache-tag'
-import { findAll, store, update, remove } from '../db'
+import { findAll, store, update, remove, findWithDetails } from '../db'
 import { courseSchema } from '../schema'
 import {
   canCreateCourses,
@@ -11,7 +11,12 @@ import {
   canUpdateCourses
 } from '../permissions'
 import { getCurrentUser } from '@/services/clerk'
-import { getCourseGlobalTag } from '@/features/courses/cache'
+import {
+  getCourseGlobalTag,
+  getCourseIdTag,
+  getCourseSectionCourseTag,
+  getLessonCourseTag
+} from '@/features/courses/cache'
 import { getUserCourseAccessGlobalTag } from '@/features/courses/cache'
 import { getCourseSectionGlobalTag } from '@/features/courses/cache'
 import { getLessonGlobalTag } from '@/features/courses/cache'
@@ -32,6 +37,20 @@ export const getCourses = async () => {
   const courses = await findAll()
 
   return courses
+}
+
+export const getCourse = async (courseId: string) => {
+  'use cache'
+
+  cacheTag(
+    getCourseIdTag(courseId),
+    getCourseSectionCourseTag(courseId),
+    getLessonCourseTag(courseId)
+  )
+
+  const course = await findWithDetails(courseId)
+
+  return course
 }
 
 export const addCourse = async (data: InferInput<typeof courseSchema>) => {
@@ -62,7 +81,11 @@ export const updateCourse = async (
 
   await update(id, output)
 
-  return { error: false, message: 'Successfully updated your course' }
+  return {
+    error: false,
+    message: 'Successfully updated your course',
+    entityId: id
+  }
 }
 
 export const deleteCourse = async (id: string) => {
