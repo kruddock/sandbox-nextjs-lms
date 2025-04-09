@@ -36,26 +36,6 @@ export const revalidateUserCourseAccessCache = ({
   revalidateTag(getUserCourseAccessUserTag(userId))
 }
 
-export const getCourseSectionGlobalTag = () => getGlobalTag('courseSections')
-
-export const getCourseSectionIdTag = (id: string) =>
-  getIdTag('courseSections', id)
-
-export const getCourseSectionCourseTag = (courseId: string) =>
-  getCourseTag('courseSections', courseId)
-
-export const revalidateCourseSectionCache = ({
-  id,
-  courseId
-}: {
-  id: string
-  courseId: string
-}) => {
-  revalidateTag(getCourseSectionGlobalTag())
-  revalidateTag(getCourseSectionIdTag(id))
-  revalidateTag(getCourseSectionCourseTag(courseId))
-}
-
 export const getLessonGlobalTag = () => getGlobalTag('lessons')
 
 export const getLessonIdTag = (id: string) => getIdTag('lessons', id)

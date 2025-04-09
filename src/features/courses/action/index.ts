@@ -13,13 +13,15 @@ import {
 import { getCurrentUser } from '@/services/clerk'
 import {
   getCourseGlobalTag,
+  getLessonGlobalTag,
+  getUserCourseAccessGlobalTag,
   getCourseIdTag,
-  getCourseSectionCourseTag,
   getLessonCourseTag
 } from '@/features/courses/cache'
-import { getUserCourseAccessGlobalTag } from '@/features/courses/cache'
-import { getCourseSectionGlobalTag } from '@/features/courses/cache'
-import { getLessonGlobalTag } from '@/features/courses/cache'
+import {
+  getCourseSectionCourseTag,
+  getCourseSectionGlobalTag
+} from '@/features/courseSections/cache'
 
 const validate = (data: InferInput<typeof courseSchema>) =>
   v.safeParse(courseSchema, data)
