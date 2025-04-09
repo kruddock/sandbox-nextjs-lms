@@ -15,6 +15,13 @@
       "when": 1743317748086,
       "tag": "0001_table_relationships",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1744216712924,
+      "tag": "0002_mature_yellowjacket",
+      "breakpoints": true
     }
   ]
 }
