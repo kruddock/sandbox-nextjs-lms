@@ -1,3 +1,5 @@
+import { EyeClosed, PlusIcon } from 'lucide-react'
+import { notFound } from 'next/navigation'
 import { PageHeader } from '@/components/PageHeader'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -6,9 +8,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { getCourse } from '@/features/courses/action'
 import { CourseForm } from '@/features/courses/components/CourseForm'
 import { SectionFormDialog } from '@/features/courseSections/components/SectionFormDialog'
+import { SortableSectionList } from '@/features/courseSections/components/SortableSectionList'
 import { cn } from '@/lib/utils'
-import { EyeClosed, PlusIcon } from 'lucide-react'
-import { notFound } from 'next/navigation'
 
 type EditCoursePageProps = {
   params: Promise<{ courseId: string }>
@@ -51,9 +52,9 @@ const EditCoursePage = async ({ params }: EditCoursePageProps) => {
             </CardContent>
           </Card>
 
-          <hr className="my-2" />
+          {/* <hr className="my-2" /> */}
 
-          {course.courseSections.map((section) => (
+          {/* {course.courseSections.map((section) => (
             <Card key={section.id}>
               <CardTitle
                 className={cn(
@@ -64,7 +65,7 @@ const EditCoursePage = async ({ params }: EditCoursePageProps) => {
                 {section.status === 'private' && <EyeClosed />} {section.name}
               </CardTitle>
             </Card>
-          ))}
+          ))} */}
         </TabsContent>
 
         <TabsContent value="details" className="flex flex-col gap-2">
