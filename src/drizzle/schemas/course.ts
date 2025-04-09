@@ -8,6 +8,7 @@ import { CourseSectionTable } from './courseSection'
 export const CourseTable = mysqlTable('courses', {
   id,
   name: text().notNull(),
+  description: text(),
   createdAt,
   updatedAt
 })
