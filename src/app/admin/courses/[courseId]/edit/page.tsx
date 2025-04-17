@@ -9,7 +9,9 @@ import { getCourse } from '@/features/courses/action'
 import { CourseForm } from '@/features/courses/components/CourseForm'
 import { SectionFormDialog } from '@/features/courseSections/components/SectionFormDialog'
 import { SortableSectionList } from '@/features/courseSections/components/SortableSectionList'
+import { SortableLessonList } from '@/features/lessons/components/SortableLessonList'
 import { cn } from '@/lib/utils'
+import { LessonFormDialog } from '@/features/lessons/components/LessonFormDialog'
 
 type EditCoursePageProps = {
   params: Promise<{ courseId: string }>
@@ -52,20 +54,41 @@ const EditCoursePage = async ({ params }: EditCoursePageProps) => {
             </CardContent>
           </Card>
 
-          {/* <hr className="my-2" /> */}
+          <hr className="my-2" />
 
-          {/* {course.courseSections.map((section) => (
-            <Card key={section.id}>
-              <CardTitle
-                className={cn(
-                  'flex items-center gap-2',
-                  section.status === 'private' && 'text-muted-foreground'
-                )}
-              >
-                {section.status === 'private' && <EyeClosed />} {section.name}
-              </CardTitle>
-            </Card>
-          ))} */}
+          <div className="px-6 space-y-6">
+            {course.courseSections.map((section) => (
+              <Card key={section.id}>
+                <CardHeader className="flex items-center justify-between gap-4">
+                  <CardTitle
+                    className={cn(
+                      'px-4 flex items-center gap-2',
+                      section.status === 'private' && 'text-muted-foreground'
+                    )}
+                  >
+                    {section.status === 'private' && <EyeClosed />}{' '}
+                    {section.name}
+                  </CardTitle>
+                  <LessonFormDialog
+                    defaultSectionId={section.id}
+                    sections={course.courseSections}
+                  >
+                    <DialogTrigger asChild>
+                      <Button>
+                        <PlusIcon /> New Lesson
+                      </Button>
+                    </DialogTrigger>
+                  </LessonFormDialog>
+                </CardHeader>
+                <CardContent>
+                  <SortableLessonList
+                    sections={course.courseSections}
+                    lessons={section.lessons}
+                  />
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </TabsContent>
 
         <TabsContent value="details" className="flex flex-col gap-2">
