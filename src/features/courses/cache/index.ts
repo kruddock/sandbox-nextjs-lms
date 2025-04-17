@@ -1,4 +1,4 @@
-import { getGlobalTag, getIdTag, getUserTag, getCourseTag } from '@/lib/cache'
+import { getGlobalTag, getIdTag, getUserTag } from '@/lib/cache'
 import { revalidateTag } from 'next/cache'
 
 export const getCourseGlobalTag = () => getGlobalTag('courses')
@@ -34,23 +34,4 @@ export const revalidateUserCourseAccessCache = ({
   revalidateTag(getUserCourseAccessGlobalTag())
   revalidateTag(getUserCourseAccessIdTag({ courseId, userId }))
   revalidateTag(getUserCourseAccessUserTag(userId))
-}
-
-export const getLessonGlobalTag = () => getGlobalTag('lessons')
-
-export const getLessonIdTag = (id: string) => getIdTag('lessons', id)
-
-export const getLessonCourseTag = (courseId: string) =>
-  getCourseTag('lessons', courseId)
-
-export const revalidateLessonCache = ({
-  id,
-  courseId
-}: {
-  id: string
-  courseId: string
-}) => {
-  revalidateTag(getLessonGlobalTag())
-  revalidateTag(getLessonIdTag(id))
-  revalidateTag(getLessonCourseTag(courseId))
 }
