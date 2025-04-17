@@ -22,12 +22,6 @@ type SortableListProps<T> = {
   children: (items: Array<T>) => ReactNode
 }
 
-type SortableItemProps = {
-  id: string
-  children: ReactNode
-  className?: string
-}
-
 export const SortableList = <T extends { id: string }>({
   items,
   onOrderChange,
@@ -77,11 +71,17 @@ export const SortableList = <T extends { id: string }>({
   )
 }
 
-export const SortableItem = ({
+type SortableListItemProps = {
+  id: string
+  children: ReactNode
+  className?: string
+}
+
+export const SortableListItem = ({
   id,
   children,
   className
-}: SortableItemProps) => {
+}: SortableListItemProps) => {
   const {
     setNodeRef,
     transform,
