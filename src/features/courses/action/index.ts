@@ -3,25 +3,33 @@
 import * as v from 'valibot'
 import type { InferInput } from 'valibot'
 import { cacheTag } from 'next/dist/server/use-cache/cache-tag'
-import { findAll, store, update, remove, findWithDetails } from '../db'
-import { courseSchema } from '../schema'
-import {
-  canCreateCourses,
-  canDeleteCourses,
-  canUpdateCourses
-} from '../permissions'
-import { getCurrentUser } from '@/services/clerk'
 import {
   getCourseGlobalTag,
-  getLessonGlobalTag,
   getUserCourseAccessGlobalTag,
-  getCourseIdTag,
-  getLessonCourseTag
+  getCourseIdTag
 } from '@/features/courses/cache'
 import {
   getCourseSectionCourseTag,
   getCourseSectionGlobalTag
 } from '@/features/courseSections/cache'
+import {
+  getLessonGlobalTag,
+  getLessonCourseTag
+} from '@/features/lessons/cache'
+import { getCurrentUser } from '@/services/clerk'
+import {
+  canCreateCourses,
+  canDeleteCourses,
+  canUpdateCourses
+} from '@/features/courses/permissions'
+import { courseSchema } from '@/features/courses/schema'
+import {
+  findAll,
+  store,
+  update,
+  remove,
+  findWithDetails
+} from '@/features/courses/db'
 
 const validate = (data: InferInput<typeof courseSchema>) =>
   v.safeParse(courseSchema, data)
