@@ -1,12 +1,12 @@
 'use client'
 
 import { EyeClosed, Trash2Icon } from 'lucide-react'
-import { CourseSectionStatus } from '@/drizzle/schema'
 import { DialogTrigger } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { SortableItem, SortableList } from '@/components/SortableList'
+import { SortableList, SortableListItem } from '@/components/SortableList'
 import { ActionButton } from '@/components/ActionButton'
 import { SectionFormDialog } from '@/features/courseSections/components/SectionFormDialog'
+import { CourseSectionStatus } from '@/drizzle/schema'
 import {
   updateSectionOrders,
   deleteSection
@@ -30,7 +30,7 @@ export const SortableSectionList = ({
     <SortableList items={sections} onOrderChange={updateSectionOrders}>
       {(items) =>
         items.map((section) => (
-          <SortableItem
+          <SortableListItem
             key={section.id}
             id={section.id}
             className="flex items-center gap-1"
@@ -57,7 +57,7 @@ export const SortableSectionList = ({
               <Trash2Icon />
               <span className="sr-only">Delete</span>
             </ActionButton>
-          </SortableItem>
+          </SortableListItem>
         ))
       }
     </SortableList>
