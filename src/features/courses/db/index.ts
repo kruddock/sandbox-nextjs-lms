@@ -1,4 +1,4 @@
-import { eq, asc, countDistinct, inArray } from 'drizzle-orm'
+import { eq, asc, countDistinct } from 'drizzle-orm'
 import { db } from '@/drizzle/db'
 import {
   CourseTable,
@@ -6,7 +6,7 @@ import {
   LessonTable,
   UserCourseAccessTable
 } from '@/drizzle/schema'
-import { revalidateCourseCache } from '../cache'
+import { revalidateCourseCache } from '@/features/courses/cache'
 
 type CourseInsert = typeof CourseTable.$inferInsert
 type CourseUpdate = Partial<CourseInsert>
@@ -93,31 +93,32 @@ export const findWithDetails = async (id: string) => {
       .where(eq(CourseSectionTable.courseId, id))
       .orderBy(asc(CourseSectionTable.order))
 
-    const lessons = await db
-      .select({
-        id: LessonTable.id,
-        name: LessonTable.name,
-        status: LessonTable.status,
-        description: LessonTable.description,
-        youtubeVideoId: LessonTable.youtubeVideoId,
-        sectionId: LessonTable.sectionId
+    const courseSectionsWithLessons = await Promise.all(
+      courseSections.map(async (values) => {
+        const lessons = await db
+          .select({
+            id: LessonTable.id,
+            name: LessonTable.name,
+            status: LessonTable.status,
+            description: LessonTable.description,
+            youtubeVideoId: LessonTable.youtubeVideoId,
+            sectionId: LessonTable.sectionId
+          })
+          .from(LessonTable)
+          .where(eq(LessonTable.sectionId, values.id))
+
+        return {
+          ...values,
+          lessons
+        }
       })
-      .from(LessonTable)
-      .where(
-        inArray(
-          LessonTable.sectionId,
-          courseSections.map(({ id }) => id)
-        )
-      )
+    )
 
     return {
       id: course.id,
       name: course.name,
       description: course.description,
-      courseSections,
-      lessons
+      courseSections: courseSectionsWithLessons
     }
   }
-
-  return null
 }
